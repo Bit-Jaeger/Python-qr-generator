@@ -29,8 +29,11 @@ class Options_Frame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
         check_var = ctk.StringVar(value="off")
+        self.grid(row=1, column=0, rowspan=3)
         self.checkbox = ctk.CTkCheckBox(self, text="Customize your QR?", command=allow_custom_qr, variable=check_var, onvalue="on", offvalue="off")
         self.checkbox.grid(row=1, column=0, padx=20, pady=20, sticky="nw", columnspan=1)
+        self.checkbox2 = ctk.CTkCheckBox(self, text="//placeholder for color", command=allow_custom_qr, variable=check_var, onvalue="on", offvalue="off")
+        self.checkbox2.grid(row=2, column=0, padx=20, pady=20, sticky="nw")
 
 
 class App(ctk.CTk):
@@ -49,7 +52,8 @@ class App(ctk.CTk):
         self.entry_frame.grid(row=1, column=0, padx=20, pady= 20, sticky="nsew")
 
         self.customqr_frame = Options_Frame(self)
-        self.customqr_frame.grid(row=1, column= 1, padx=20, pady=20, sticky="nw")
+        self.customqr_frame.grid(row=2, column=0, padx=20, pady=20, sticky="nw")
+
 
 
 
