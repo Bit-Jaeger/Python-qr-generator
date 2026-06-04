@@ -20,10 +20,16 @@ cd qr-code-generator-gui
 
 ## Install the Dependencies
 
-I am making use of these Libraries to make my life easier and create the UI.
+I am making use of these Libraries
 ```bash
-pip install customtkinter qrcode[pil]
+pip install customtkinter qrcode
 ```
+Alternatively you can make use of the provided requirements.txt file in the repo.
+Navigae to the cloned repository and run:
+```bash
+pip install -r requirements.txt
+```
+to install all dependencies at once via pip
 
 ## Running the application
 

@@ -1,5 +1,6 @@
 import qrcode
 import sys
+import customtkinter as ctk
 
 
 qr = qrcode.QRCode(
