@@ -1,4 +1,5 @@
 import qrcode
+import sys
 
 
 qr = qrcode.QRCode(
@@ -9,38 +10,45 @@ qr = qrcode.QRCode(
 )
 
 
-print(f"Do you want to customize size and color from your qr code? [Y/N]")
-def prompt_custom_yn()
-
-
-
 # prompt user if code should be customized - color,border, ...
-def prompt_custom_yn(){
+def prompt_custom_yn():
 
     doCustom = input()
-    if(doCustom.lower() == "n"){
+    if doCustom.lower() == "n":
         basic_qr()
-    }
-    elif(doCustom.lower() == "y"){
+    
+    elif doCustom.lower() == "y":
         custom_qr()
-    }
-    else{
-        print(f"Please provide a valid answer: [Y/N]")
-    }
-}
+    
+    else:
+        sys.exit("Please provide a valid answer: [Y/N]")
 
+    # decide what function to call, when user decided
 
+    
 
-
-
-
-def basic_qr(){
+def basic_qr():
     print(f"This will be the basic qr-code")
-}
+    return 0
 
-def custom_qr(){
+
+def custom_qr():
     print(f"Custom QR-Code will be generated.")
-}
+    return 0
+
+
+
+
+print(f"Do you want to customize size and color from your qr code? [Y/N]")
+prompt_custom_yn()
+
+
+
+
+
+
+
+
 
 #qr.add_data('Some data')
 #qr.make(fit=True)
