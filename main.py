@@ -1,5 +1,6 @@
 import qrcode
 import customtkinter as ctk
+from PIL import Image
 
 # ------ GENERATING LOGIC -------
 qr = qrcode.QRCode(
@@ -97,7 +98,6 @@ class App(ctk.CTk):
 def main():
 
     app = App()
- 
     app.mainloop()
 
    
@@ -111,8 +111,13 @@ def main():
 
 def basic_qr(url):
     print(f"This will be the basic qr-code")
-    print(f"basic_qr functino gets value:{url}")
+    print(f"basic_qr function gets value:{url}")
+    qr.add_data(url)
+    qr.make(fit=True)
 
+    output_qr = qr.make_image(fill_color="black", back_color="white")
+    output_qr.save("output.jpg")
+    print(f"QR Code successfully saved!")
 
 
 
