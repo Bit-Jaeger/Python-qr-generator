@@ -2,6 +2,9 @@ A sleek, desktop-based QR Code Generator built with Python.
 The application will feature a user Interface that allows to prompt for the QR-Code as well as for customization of it. 
 It will transform any text/URL to your custom QR-Code.
 
+# State (MM.DD.YYYY)
+06.07.2026: As of Today the App does run and converts pasted URLs to a .jpg Output File into the Project directory.
+
 # Tech
 - CustomTkinter: UI built using CustomTkinter for native, responsive expierience 
 - Python: Underneath the hood to make myself more comfortable with the language
