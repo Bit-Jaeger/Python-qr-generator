@@ -38,12 +38,22 @@ class Entry_Frame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master, corner_radius=50)
 
+
+        ###### url-entry #####
         self.entry = ctk.CTkEntry(self, placeholder_text="Paste URL here")
-        self.entry.grid(row=2, column=2, padx= 20, pady=20, sticky="n", columnspan=3)
+        self.entry.grid(row=1, column=2, padx= 20, pady=20, sticky="n", columnspan=3)
+
+    
+
+        
+        self.filename_entry = ctk.CTkEntry(self, placeholder_text="Name the Output.jpg here")
+        self.filename_entry.grid(row=2, column=2, padx=20, pady=20, sticky="n")
+
+        ####### functions ########
+        #------ url ------#
     def get_input_url(self):
         print("get_input_url is being called!!")
         return self.entry.get()
-
 
 class Btn_GenQR_Frame(ctk.CTkFrame):
     def __init__(self, master, event_generate):
@@ -100,6 +110,7 @@ class App(ctk.CTk):
 
         self.entry = Entry_Frame(self)
         self.entry.grid(row=2, column=2, padx=20, pady=20, sticky="n")
+
 
         self.genQR = Btn_GenQR_Frame(self, self.pass_qr)
         self.genQR.grid(row=3, column=2, padx=20, pady=20, sticky="n")
