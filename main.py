@@ -20,7 +20,7 @@ class Label_Frame(ctk.CTkFrame):
         super().__init__(master, corner_radius=50)
 
         self.label = ctk.CTkLabel(self, text="Jaeger's QR-Code Generator", font=ctk.CTkFont(size=20, weight="bold"), corner_radius = 50)
-        self.label.grid(row=0, column=3, padx=20, pady=25, sticky="ew", columnspan=3)
+        self.label.grid(row=0, column=3, padx=20, pady=25, sticky="n", columnspan=3)
 
 #Creating segmented button used as main navigator
 class Segmented_Button_Frame(ctk.CTkFrame):
@@ -64,17 +64,17 @@ class Slider_Group_Frame(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="Foreground Color", font=ctk.CTkFont(size=20, weight="bold"), corner_radius = 50)
         self.label.grid(row=0,column=3, padx=20, pady=20, sticky="n")
         
-        self.red_slider = ctk.CTkSlider(self, from_=0, to=255, command=red_slider_event, progress_color=("white", "red"), button_color="white")
+        self.red_slider = ctk.CTkSlider(self, from_=0, to=255, command=red_slider_event, progress_color=("red", "red"), button_color="white", button_hover_color=("red", "red"))
         self.red_slider.grid(row=1, column=3, padx=20, pady=20, sticky="n", columnspan=2)
         def red_slider_event(value_red):
             super().red_slider_event(value_red)
             
-        self.green_slider = ctk.CTkSlider(self, from_=0, to=255, command=green_slider_event, progress_color=("white", "green"), button_color="white")
+        self.green_slider = ctk.CTkSlider(self, from_=0, to=255, command=green_slider_event, progress_color=("green", "green"), button_color="white", button_hover_color=("green", "green"))
         self.green_slider.grid(row=2, column=3, padx=20, pady=20, sticky="n", columnspan=2)
         def green_slider_event(value_green):
             super().green_slider_event(value_green)
             
-        self.blue_slider = ctk.CTkSlider(self, from_=0, to=255, command=blue_slider_event, progress_color=("white", "blue"), button_color="white")
+        self.blue_slider = ctk.CTkSlider(self, from_=0, to=255, command=blue_slider_event, progress_color=("blue", "blue"), button_color="white", button_hover_color=("blue", "blue"))
         self.blue_slider.grid(row=3, column=3, padx=20, pady=20, sticky="n", columnspan=2)
         def blue_slider_event(value_blue):
             super().blue_slider_event(value_blue)
@@ -87,7 +87,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("QR-Code Generator")
-        self.geometry("1000x800")
+        self.geometry("1000x600")
         self.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
         
         # Creating the Label frame off of parent class
