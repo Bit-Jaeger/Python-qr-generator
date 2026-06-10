@@ -1,5 +1,6 @@
 # created Outputs should not be uploaded
-output.jpg
+*.jpg
+*.jpeg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
