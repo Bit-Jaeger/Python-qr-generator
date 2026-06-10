@@ -46,7 +46,7 @@ class Entry_Frame(ctk.CTkFrame):
     
 
         
-        self.filename_entry = ctk.CTkEntry(self, placeholder_text="Name the Output.jpg here")
+        self.filename_entry = ctk.CTkEntry(self, placeholder_text=">filename<.jpg")
         self.filename_entry.grid(row=2, column=2, padx=20, pady=20, sticky="n")
 
         ####### functions ########
@@ -68,28 +68,51 @@ class Btn_GenQR_Frame(ctk.CTkFrame):
             
 # _________ Slider for ForeGround Color QR ____________
 class Slider_Group_Frame(ctk.CTkFrame):
-    def __init__(self, master, update_rgb_event):
+    def __init__(self, master):
         super().__init__(master, corner_radius=50)
         
         self.label = ctk.CTkLabel(self, text="Foreground:", font=ctk.CTkFont(size=20, weight="bold"), corner_radius = 50)
         self.label.grid(row=0,column=3, padx=20, pady=20, sticky="n")
         
-        self.red_slider = ctk.CTkSlider(self, from_=0, to=255, command=update_rgb_event, progress_color=("white", "red"), button_color="white")
-        self.red_slider.grid(row=1, column=3, padx=20, pady=20, sticky="n", columnspan=2)
-
-            
-        self.green_slider = ctk.CTkSlider(self, from_=0, to=255, command=update_rgb_event, progress_color=("white", "green"), button_color="white")
-        self.green_slider.grid(row=2, column=3, padx=20, pady=20, sticky="n", columnspan=2)
-
-            
-        self.blue_slider = ctk.CTkSlider(self, from_=0, to=255, command=update_rgb_event, progress_color=("white", "blue"), button_color="white")
-        self.blue_slider.grid(row=3, column=3, padx=20, pady=20, sticky="n", columnspan=2)
-        
-        
-
-        
+                
         self.fg_canvas = ctk.CTkCanvas(self, height=20, width=20, bg="black")
         self.fg_canvas.grid(row=0, column=4, sticky="w")
+
+        
+        self.red_slider = ctk.CTkSlider(self, from_=0, to=255, command=self.on_slider_move, progress_color=("white", "red"), button_color="white")
+        self.red_slider.grid(row=1, column=3, padx=20, pady=20, sticky="n", columnspan=2)
+        self.red_slider.set(0)
+
+            
+        self.green_slider = ctk.CTkSlider(self, from_=0, to=255, command=self.on_slider_move, progress_color=("white", "green"), button_color="white")
+        self.green_slider.grid(row=2, column=3, padx=20, pady=20, sticky="n", columnspan=2)
+        self.green_slider.set(0)
+
+            
+        self.blue_slider = ctk.CTkSlider(self, from_=0, to=255, command=self.on_slider_move, progress_color=("white", "blue"), button_color="white")
+        self.blue_slider.grid(row=3, column=3, padx=20, pady=20, sticky="n", columnspan=2)
+        self.blue_slider.set(0)
+        
+            
+            
+            
+    def on_slider_move(self, value):
+        r = int(self.red_slider.get())
+        g = int(self.green_slider.get())
+        b = int(self.blue_slider.get())
+        
+        # Update Canvas preview color hex format
+        hex_color = f'#{r:02x}{g:02x}{b:02x}'
+        self.fg_canvas.config(bg=hex_color)
+        
+        # Function to pass the Value to the App
+        self.update_rgb_FrameToApp(hex_color)
+        
+        
+    def update_rgb_FrameToApp(hex_color):
+        rgb = hex_color
+        return rgb
+
 
 
 
@@ -119,18 +142,16 @@ class App(ctk.CTk):
         
         
         ######## slider group Foreground #######
-        self.slider_group = Slider_Group_Frame(self, self.red_slider_event, self.green_slider_event, self.blue_slider_event)
+        self.slider_group = Slider_Group_Frame(self)
         self.slider_group.grid(row=2, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
         
         
     #_____ logic to get rgb value as foreground _______
-    def rgb_config(self, red_slider_event, green_slider_event, blue_slider_event):
-        r = self.red_slider_event()
-        g = self.green_slider_event()
-        b = self.blue_slider_event()
-        rgb = [r,g,b]
-        print(f"rgb")
-        return rgb
+    def rgb_config(self):
+        
+        rgb = self.slider_group.update_rgb_FrameToApp()
+        print(f"rgb value in App is: {rgb}")
+
         
         
             
@@ -139,7 +160,8 @@ class App(ctk.CTk):
     
     def pass_qr(self):
         url = self.entry.get_input_url()
-        basic_qr(url)
+        rgb = self.slider_group.update_rgb_FrameToApp()
+        basic_qr(url, rgb)
 
 
 
@@ -166,13 +188,14 @@ def main():
     
 
 
-def basic_qr(url):
+def basic_qr(url, rgb):
     print(f"This will be the basic qr-code")
     print(f"basic_qr function gets value:{url}")
+    qr.clear()
     qr.add_data(url)
     qr.make(fit=True)
 
-    output_qr = qr.make_image(fill_color="black", back_color="white")
+    output_qr = qr.make_image(fill_color=f"{rgb}", back_color="white")
     output_qr.save("output.jpg")
     print(f"QR Code successfully saved!")
 
