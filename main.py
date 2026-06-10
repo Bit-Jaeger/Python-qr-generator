@@ -48,6 +48,9 @@ class Entry_Frame(ctk.CTkFrame):
         
         self.filename_entry = ctk.CTkEntry(self, placeholder_text=">filename<.jpg")
         self.filename_entry.grid(row=2, column=2, padx=20, pady=20, sticky="n")
+        
+    def get_entry_string(self):
+        return self.filename_entry.get()
 
         ####### functions ########
         #------ url ------#
@@ -93,7 +96,8 @@ class Slider_Group_Frame(ctk.CTkFrame):
         self.blue_slider.grid(row=3, column=3, padx=20, pady=20, sticky="n", columnspan=2)
         self.blue_slider.set(0)
         
-            
+        # Creating rgb variable in object, to have easy access to it
+        self.rgb_value = (0, 0, 0)
             
             
     def on_slider_move(self, value):
@@ -101,18 +105,15 @@ class Slider_Group_Frame(ctk.CTkFrame):
         g = int(self.green_slider.get())
         b = int(self.blue_slider.get())
         
-        # Update Canvas preview color hex format
+        # Update Canvas preview color -> for fun in HEX
         hex_color = f'#{r:02x}{g:02x}{b:02x}'
         self.fg_canvas.config(bg=hex_color)
         
-        # Function to pass the Value to the App
-        self.update_rgb_FrameToApp(hex_color)
+        rgb = (r, g, b)
         
+        # Function to provide value in slider-object for App to have direct access to it!
+        self.rgb_value = rgb
         
-    def update_rgb_FrameToApp(hex_color):
-        rgb = hex_color
-        return rgb
-
 
 
 
@@ -157,17 +158,14 @@ class App(ctk.CTk):
             
     
     
+    ###### also passes other values!! #######
+#TODO: Color not working rn: remove function call for color
     
     def pass_qr(self):
         url = self.entry.get_input_url()
-        rgb = self.slider_group.update_rgb_FrameToApp()
-        basic_qr(url, rgb)
-
-
-
-
-
-        
+        rgb = self.slider_group.rgb_value
+        filename = self.entry.get_entry_string()
+        basic_qr(url, rgb, filename)
 
 
 
@@ -179,37 +177,25 @@ def main():
     app = App()
     app.mainloop()
 
-   
-        
-    #current_input = app.entry.get_input_url()
-    #basic_qr(current_input)
-    
-    
-    
 
-
-def basic_qr(url, rgb):
+def basic_qr(url, rgb, filename):
     print(f"This will be the basic qr-code")
     print(f"basic_qr function gets value:{url}")
     qr.clear()
     qr.add_data(url)
     qr.make(fit=True)
 
-    output_qr = qr.make_image(fill_color=f"{rgb}", back_color="white")
-    output_qr.save("output.jpg")
+    output_qr = qr.make_image(fill_color=rgb, back_color="white")
+    
+    # check if filename is empty
+    if(filename=""):
+        filename = "output"
+    
+    #### check if filename is empty string -> then output.jpg #####
+    output_qr.save(f"{filename}.jpg")
     print(f"QR Code successfully saved!")
 
 
-
-
-
-
-
-    #qr.add_data('Some data')
-    #qr.make(fit=True)
-
-
-    #img = qr.make_image(fill_color="black", back_color="white")
 
 
 if __name__ == "__main__":
