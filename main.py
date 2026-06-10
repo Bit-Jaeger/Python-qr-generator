@@ -58,26 +58,28 @@ class Btn_GenQR_Frame(ctk.CTkFrame):
             
 # _________ Slider for ForeGround Color QR ____________
 class Slider_Group_Frame(ctk.CTkFrame):
-    def __init__(self, master, red_slider_event, green_slider_event, blue_slider_event):
+    def __init__(self, master, update_rgb_event):
         super().__init__(master, corner_radius=50)
         
-        self.label = ctk.CTkLabel(self, text="Foreground Color", font=ctk.CTkFont(size=20, weight="bold"), corner_radius = 50)
+        self.label = ctk.CTkLabel(self, text="Foreground:", font=ctk.CTkFont(size=20, weight="bold"), corner_radius = 50)
         self.label.grid(row=0,column=3, padx=20, pady=20, sticky="n")
         
-        self.red_slider = ctk.CTkSlider(self, from_=0, to=255, command=red_slider_event, progress_color=("white", "red"), button_color="white")
+        self.red_slider = ctk.CTkSlider(self, from_=0, to=255, command=update_rgb_event, progress_color=("white", "red"), button_color="white")
         self.red_slider.grid(row=1, column=3, padx=20, pady=20, sticky="n", columnspan=2)
-        def red_slider_event(value_red):
-            super().red_slider_event(value_red)
+
             
-        self.green_slider = ctk.CTkSlider(self, from_=0, to=255, command=green_slider_event, progress_color=("white", "green"), button_color="white")
+        self.green_slider = ctk.CTkSlider(self, from_=0, to=255, command=update_rgb_event, progress_color=("white", "green"), button_color="white")
         self.green_slider.grid(row=2, column=3, padx=20, pady=20, sticky="n", columnspan=2)
-        def green_slider_event(value_green):
-            super().green_slider_event(value_green)
+
             
-        self.blue_slider = ctk.CTkSlider(self, from_=0, to=255, command=blue_slider_event, progress_color=("white", "blue"), button_color="white")
+        self.blue_slider = ctk.CTkSlider(self, from_=0, to=255, command=update_rgb_event, progress_color=("white", "blue"), button_color="white")
         self.blue_slider.grid(row=3, column=3, padx=20, pady=20, sticky="n", columnspan=2)
-        def blue_slider_event(value_blue):
-            super().blue_slider_event(value_blue)
+        
+        
+
+        
+        self.fg_canvas = ctk.CTkCanvas(self, height=20, width=20, bg="black")
+        self.fg_canvas.grid(row=0, column=4, sticky="w")
 
 
 
@@ -107,17 +109,19 @@ class App(ctk.CTk):
         
         ######## slider group Foreground #######
         self.slider_group = Slider_Group_Frame(self, self.red_slider_event, self.green_slider_event, self.blue_slider_event)
-        self.slider_group.grid(row=2, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=4)
+        self.slider_group.grid(row=2, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
         
         
-    def red_slider_event(self, r_value):
-        print(f"r:{r_value} in app")
+    #_____ logic to get rgb value as foreground _______
+    def rgb_config(self, red_slider_event, green_slider_event, blue_slider_event):
+        r = self.red_slider_event()
+        g = self.green_slider_event()
+        b = self.blue_slider_event()
+        rgb = [r,g,b]
+        print(f"rgb")
+        return rgb
         
-    def green_slider_event(self, g_value):
-        print(f"g:{g_value} in app")
         
-    def blue_slider_event(self, b_value):
-        print(f"b:{b_value} in app")
             
     
     
