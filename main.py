@@ -146,21 +146,9 @@ class App(ctk.CTk):
         self.slider_group = Slider_Group_Frame(self)
         self.slider_group.grid(row=2, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
         
-        
-    #_____ logic to get rgb value as foreground _______
-    def rgb_config(self):
-        
-        rgb = self.slider_group.update_rgb_FrameToApp()
-        print(f"rgb value in App is: {rgb}")
-
-        
-        
             
     
-    
     ###### also passes other values!! #######
-#TODO: Color not working rn: remove function call for color
-    
     def pass_qr(self):
         url = self.entry.get_input_url()
         rgb = self.slider_group.rgb_value
@@ -179,7 +167,6 @@ def main():
 
 
 def basic_qr(url, rgb, filename):
-    print(f"This will be the basic qr-code")
     print(f"basic_qr function gets value:{url}")
     qr.clear()
     qr.add_data(url)
