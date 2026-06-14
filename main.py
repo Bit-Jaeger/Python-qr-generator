@@ -22,16 +22,6 @@ class Label_Frame(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="Jaeger's QR-Code Generator", font=ctk.CTkFont(size=20, weight="bold"), corner_radius = 50)
         self.label.grid(row=0, column=3, padx=20, pady=25, sticky="n", columnspan=3)
 
-#Creating segmented button used as main navigator
-class Segmented_Button_Frame(ctk.CTkFrame):
-    def __init__(self, master):
-        super().__init__(master, corner_radius=50)
-        self.seg_button = ctk.CTkSegmentedButton(self, corner_radius=50, values=["Entry", "Customize"], border_width=5, height=50, command=self.seg_btn_callback)
-        self.seg_button.grid(row=1, column=3, sticky="n")
-        self.seg_button.set("Entry")
-
-    def seg_btn_callback(self, value):
-        print(f"{value}")
 
 #Seg_Button is on QR-Code
 class Entry_Frame(ctk.CTkFrame):
@@ -55,7 +45,6 @@ class Entry_Frame(ctk.CTkFrame):
         ####### functions ########
         #------ url ------#
     def get_input_url(self):
-        print("get_input_url is being called!!")
         return self.entry.get()
 
 class Btn_GenQR_Frame(ctk.CTkFrame):
@@ -180,10 +169,17 @@ def basic_qr(url, rgb, filename):
     
     #### check if filename is empty string -> then output.jpg #####
     output_qr.save(f"{filename}.jpg")
+    
+    
+    
+    ######### Give Feedback to the User inside of a label in the middle of the UI ###########
+    user_feedback()
     print(f"QR Code successfully saved!")
 
 
-
+def user_feedback():
+    #TODO: Feedback Label in the middle of the UI
+    #app.feedback.XXXX
 
 if __name__ == "__main__":
     main()
