@@ -34,7 +34,6 @@ class Entry_Frame(ctk.CTkFrame):
         self.entry.grid(row=1, column=2, padx= 20, pady=20, sticky="n", columnspan=3)
 
     
-
         
         self.filename_entry = ctk.CTkEntry(self, placeholder_text=">filename<.jpg")
         self.filename_entry.grid(row=2, column=2, padx=20, pady=20, sticky="n")
@@ -132,7 +131,7 @@ class Slider_Group_Frame_bg(ctk.CTkFrame):
         self.blue_slider.set(255)
         
         # Creating rgb variable in object, to have easy access to it
-        self.rgb_value = (255, 255, 255)
+        self.rgb_value_bg = (255, 255, 255)
             
             
     def on_slider_move_bg(self, value):
@@ -157,6 +156,9 @@ class Feedback_Label_Frame(ctk.CTkFrame):
         super().__init__(master, corner_radius=50)
         self.Feedback = ctk.CTkLabel(self, text="", font=ctk.CTkFont(size=12, weight="bold"), corner_radius = 50)
         self.grid(row=3, column=3, padx=20, pady=20, sticky="n")
+        
+        def success():
+            self.Feedback.configure(text="QR has been generated :)")
 
 
 
@@ -197,12 +199,19 @@ class App(ctk.CTk):
     
     ###### also passes other values!! #######
     def pass_qr(self):
+    # COLLECT ALL VALUES
         url = self.entry.get_input_url()
         rgb = self.slider_group.rgb_value
         rgb_bg = self.slider_group2.rgb_value_bg
         filename = self.entry.get_entry_string()
+        
+        
+    # HAND THEM OVER TO CREATION FUNCTION
         basic_qr(url, rgb, filename, rgb_bg)
 
+
+
+        
 
 
 
@@ -231,6 +240,7 @@ def basic_qr(url, rgb, filename, rgb_bg):
     output_qr.save(f"{filename}.jpg")
     ######### Give Feedback to the User inside of a label in the middle of the UI ###########
     print(f"QR Code successfully saved!")
+    return True
 
 
 if __name__ == "__main__":
