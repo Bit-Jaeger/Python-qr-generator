@@ -48,13 +48,13 @@ class Entry_Frame(ctk.CTkFrame):
         return self.entry.get()
 
 class Btn_GenQR_Frame(ctk.CTkFrame):
-    def __init__(self, master, event_generate):
+    #### solution for calling pass_qr to hand over all values when clicking the button: ####
+    #### app hands over the function(pass_qr) and the button inherits this function, calls it when button is pressed, and app collects all data it needs ####
+    def __init__(self, master, pass_qr):
         super().__init__(master, corner_radius=50)
 
-        self.generate_btn = ctk.CTkButton(self, text="Generate QR", command=event_generate)
+        self.generate_btn = ctk.CTkButton(self, text="Generate QR", command=pass_qr)
         self.generate_btn.grid(row=2, column=2, padx=20, pady=20, sticky="n")
-        def event_generate():
-            super().pass_qr()
             
             
             
@@ -104,6 +104,13 @@ class Slider_Group_Frame(ctk.CTkFrame):
         self.rgb_value = rgb
         
 
+class Feedback_Label_Frame(ctk.CTkFrame):
+    def __init__(self,master):
+        super().__init__(master, corner_radius=50)
+        self.Feedback = ctk.CTkLabel(self, text="", font=ctk.CTkFont(size=12, weight="bold"), corner_radius = 50)
+        self.grid(row=3, column=3, padx=20, pady=20, sticky="n")
+
+
 
 
 # ______ APP ________
@@ -119,9 +126,6 @@ class App(ctk.CTk):
         self.label_frame = Label_Frame(self)
         self.label_frame.grid(row=0, column=3, padx=20, pady=30, sticky="n", columnspan=1)
 
-        #Creating seg_btn
-        self.seg_btn = Segmented_Button_Frame(self)
-        self.seg_btn.grid(row=1, column=3, padx=20, pady=20, sticky="n")
 
         self.entry = Entry_Frame(self)
         self.entry.grid(row=2, column=2, padx=20, pady=20, sticky="n")
@@ -129,6 +133,9 @@ class App(ctk.CTk):
 
         self.genQR = Btn_GenQR_Frame(self, self.pass_qr)
         self.genQR.grid(row=3, column=2, padx=20, pady=20, sticky="n")
+        
+        self.feedback = Feedback_Label_Frame(self)
+        self.feedback.grid(row=3, column=3, padx=20, pady=20, sticky="n")
         
         
         ######## slider group Foreground #######
@@ -143,6 +150,7 @@ class App(ctk.CTk):
         rgb = self.slider_group.rgb_value
         filename = self.entry.get_entry_string()
         basic_qr(url, rgb, filename)
+
 
 
 
@@ -169,17 +177,9 @@ def basic_qr(url, rgb, filename):
     
     #### check if filename is empty string -> then output.jpg #####
     output_qr.save(f"{filename}.jpg")
-    
-    
-    
     ######### Give Feedback to the User inside of a label in the middle of the UI ###########
-    user_feedback()
     print(f"QR Code successfully saved!")
 
-
-def user_feedback():
-    #TODO: Feedback Label in the middle of the UI
-    #app.feedback.XXXX
 
 if __name__ == "__main__":
     main()
