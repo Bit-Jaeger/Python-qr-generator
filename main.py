@@ -104,6 +104,54 @@ class Slider_Group_Frame(ctk.CTkFrame):
         self.rgb_value = rgb
         
 
+# _________ Slider for ForeGround Color QR ____________
+class Slider_Group_Frame_bg(ctk.CTkFrame):
+    def __init__(self, master):
+        super().__init__(master, corner_radius=50)
+        
+        self.label = ctk.CTkLabel(self, text="Background:", font=ctk.CTkFont(size=20, weight="bold"), corner_radius = 50)
+        self.label.grid(row=0,column=3, padx=20, pady=20, sticky="n")
+        
+                
+        self.fg_canvas = ctk.CTkCanvas(self, height=20, width=20, bg="white")
+        self.fg_canvas.grid(row=0, column=4, sticky="w")
+
+        
+        self.red_slider = ctk.CTkSlider(self, from_=0, to=255, command=self.on_slider_move_bg, progress_color=("white", "red"), button_color="white")
+        self.red_slider.grid(row=1, column=3, padx=20, pady=20, sticky="n", columnspan=2)
+        self.red_slider.set(255)
+
+            
+        self.green_slider = ctk.CTkSlider(self, from_=0, to=255, command=self.on_slider_move_bg, progress_color=("white", "green"), button_color="white")
+        self.green_slider.grid(row=2, column=3, padx=20, pady=20, sticky="n", columnspan=2)
+        self.green_slider.set(255)
+
+            
+        self.blue_slider = ctk.CTkSlider(self, from_=0, to=255, command=self.on_slider_move_bg, progress_color=("white", "blue"), button_color="white")
+        self.blue_slider.grid(row=3, column=3, padx=20, pady=20, sticky="n", columnspan=2)
+        self.blue_slider.set(255)
+        
+        # Creating rgb variable in object, to have easy access to it
+        self.rgb_value = (255, 255, 255)
+            
+            
+    def on_slider_move_bg(self, value):
+        r = int(self.red_slider.get())
+        g = int(self.green_slider.get())
+        b = int(self.blue_slider.get())
+        
+        # Update Canvas preview color -> for fun in HEX
+        hex_color = f'#{r:02x}{g:02x}{b:02x}'
+        self.fg_canvas.config(bg=hex_color)
+        
+        rgb_bg = (r, g, b)
+        
+        # Function to provide value in slider-object for App to have direct access to it!
+        self.rgb_value_bg = rgb_bg
+        
+
+
+
 class Feedback_Label_Frame(ctk.CTkFrame):
     def __init__(self,master):
         super().__init__(master, corner_radius=50)
@@ -119,7 +167,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("QR-Code Generator")
-        self.geometry("1000x600")
+        self.geometry("1000x800")
         self.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
         
         # Creating the Label frame off of parent class
@@ -135,21 +183,25 @@ class App(ctk.CTk):
         self.genQR.grid(row=3, column=2, padx=20, pady=20, sticky="n")
         
         self.feedback = Feedback_Label_Frame(self)
-        self.feedback.grid(row=3, column=3, padx=20, pady=20, sticky="n")
+        self.feedback.grid(row=2, column=3, padx=20, pady=20, sticky="n")
         
         
         ######## slider group Foreground #######
         self.slider_group = Slider_Group_Frame(self)
         self.slider_group.grid(row=2, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
         
+        ######## slider group Background #######
+        self.slider_group2 = Slider_Group_Frame_bg(self)
+        self.slider_group2.grid(row=4, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
             
     
     ###### also passes other values!! #######
     def pass_qr(self):
         url = self.entry.get_input_url()
         rgb = self.slider_group.rgb_value
+        rgb_bg = self.slider_group2.rgb_value_bg
         filename = self.entry.get_entry_string()
-        basic_qr(url, rgb, filename)
+        basic_qr(url, rgb, filename, rgb_bg)
 
 
 
@@ -163,13 +215,13 @@ def main():
     app.mainloop()
 
 
-def basic_qr(url, rgb, filename):
+def basic_qr(url, rgb, filename, rgb_bg):
     print(f"basic_qr function gets value:{url}")
     qr.clear()
     qr.add_data(url)
     qr.make(fit=True)
 
-    output_qr = qr.make_image(fill_color=rgb, back_color="white")
+    output_qr = qr.make_image(fill_color=rgb, back_color=rgb_bg)
     
     # check if filename is empty
     if(filename==""):
