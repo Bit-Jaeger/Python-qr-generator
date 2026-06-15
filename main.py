@@ -178,23 +178,23 @@ class App(ctk.CTk):
 
 
         self.entry = Entry_Frame(self)
-        self.entry.grid(row=2, column=2, padx=20, pady=20, sticky="n")
+        self.entry.grid(row=2, column=3, padx=20, pady=20, sticky="n")
 
 
         self.genQR = Btn_GenQR_Frame(self, self.pass_qr)
-        self.genQR.grid(row=3, column=2, padx=20, pady=20, sticky="n")
+        self.genQR.grid(row=3, column=3, padx=20, pady=20, sticky="n")
         
         self.feedback = Feedback_Label_Frame(self)
-        self.feedback.grid(row=2, column=3, padx=20, pady=20, sticky="n")
+        self.feedback.grid(row=2, column=5, padx=20, pady=20, sticky="n")
         
         
         ######## slider group Foreground #######
         self.slider_group = Slider_Group_Frame(self)
-        self.slider_group.grid(row=2, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
+        self.slider_group.grid(row=2, column=1, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
         
         ######## slider group Background #######
         self.slider_group2 = Slider_Group_Frame_bg(self)
-        self.slider_group2.grid(row=4, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
+        self.slider_group2.grid(row=2, column=4, padx=20, pady=20, sticky="n", columnspan=2, rowspan=5)
             
     
     ###### also passes other values!! #######
@@ -207,7 +207,7 @@ class App(ctk.CTk):
         
         
     # HAND THEM OVER TO CREATION FUNCTION
-        basic_qr(url, rgb, filename, rgb_bg)
+        status = basic_qr(url, rgb, filename, rgb_bg)
 
 
 
@@ -225,22 +225,25 @@ def main():
 
 
 def basic_qr(url, rgb, filename, rgb_bg):
-    print(f"basic_qr function gets value:{url}")
-    qr.clear()
-    qr.add_data(url)
-    qr.make(fit=True)
+    try:
+        print(f"basic_qr function gets value:{url}")
+        qr.clear()
+        qr.add_data(url)
+        qr.make(fit=True)
 
-    output_qr = qr.make_image(fill_color=rgb, back_color=rgb_bg)
-    
-    # check if filename is empty
-    if(filename==""):
-        filename = "output"
-    
-    #### check if filename is empty string -> then output.jpg #####
-    output_qr.save(f"{filename}.jpg")
-    ######### Give Feedback to the User inside of a label in the middle of the UI ###########
-    print(f"QR Code successfully saved!")
-    return True
+        output_qr = qr.make_image(fill_color=rgb, back_color=rgb_bg)
+        
+        # check if filename is empty
+        if(filename==""):
+            filename = "output"
+        
+        #### check if filename is empty string -> then output.jpg #####
+        output_qr.save(f"{filename}.jpg")
+        ######### Give Feedback to the User inside of a label in the middle of the UI ###########
+        print(f"QR Code successfully saved!")
+        return "success"
+    except Exception:
+        return "error"
 
 
 if __name__ == "__main__":
