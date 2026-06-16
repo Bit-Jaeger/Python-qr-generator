@@ -3,7 +3,10 @@ The application will feature a user Interface that allows to prompt for the QR-C
 It will transform any text/URL to your custom QR-Code.
 
 # State (MM.DD.YYYY)
-06.07.2026: As of Today the App does run and converts pasted URLs to a .jpg Output File into the Project directory.
+16.06.2026: UI got refactored for easier use.
+15.06.2026: Possible to give foreground- and background-color via slider-inputs. Also name the output.png file via entry field.
+06.06.2026: As of Today the App does run and converts pasted URLs to a .jpg Output File into the Project directory.
+
 
 # Tech
 - CustomTkinter: UI built using CustomTkinter for native, responsive expierience 
@@ -11,7 +14,7 @@ It will transform any text/URL to your custom QR-Code.
 
 # Features to be added
 - at the moment the project is under construction. If finished, this part of the README will be deleted
-- UI
+- better catch of mistakes
 
 # Prerequisites & Installation
 ## Clone the Repository
